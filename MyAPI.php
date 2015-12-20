@@ -2,10 +2,9 @@
 session_start();
 require_once 'API.php';
 require_once 'includes/MyDB.php';
+require 'include.php';
 class MyAPI extends API
 {
-    protected $User;
-
     public function __construct($request, $origin) {
         parent::__construct($request);
         
@@ -18,17 +17,17 @@ class MyAPI extends API
         if(!in_array($this->headers['Token'], $_SESSION) && $request != 'get_token'){
             throw new Exception('Expired or Invalid API Token');
         }
-
     }
 
     /**
      * Example of an Endpoint
      */
-     protected function example() {
+     protected function get_user_list() {
         if ($this->method == 'GET') {
-            return "Your name is " . $this->User->name;
+            $User = new User();
+            return $User->get_user_list();
         } else {
-            return "Only accepts GET requests";
+            throw new Exception('Only accepts GET requests');
         }
      }
      
@@ -50,16 +49,16 @@ class MyAPI extends API
                         return $_SESSION[$username];
                     }
                     else{
-                        return 'Invalid user credentials';
+                        throw new Exception('Invalid user credentials');
                     }
                 }
             }
             else{
-                return 'Missing username/password';
+                throw new Exception('Missing username or password');
             }
         
         } else {
-            return "Only accepts POST requests";
+            throw new Exception('Wrong request type');
         }
      }
  }

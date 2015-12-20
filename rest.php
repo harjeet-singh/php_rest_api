@@ -1,6 +1,10 @@
 <?php
 date_default_timezone_set('America/New_York');
 
+require_once 'includes/MyDB.php';
+$db = MyDB::getInstance();
+
+
 //writelog($_REQUEST);
 require_once 'MyAPI.php';
 // Requests from the same server don't have a HTTP_ORIGIN header
